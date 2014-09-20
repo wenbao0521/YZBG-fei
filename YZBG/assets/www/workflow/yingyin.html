@@ -1,0 +1,25 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+</head>
+
+<body>
+
+
+
+
+<!--<video src="http://210.73.88.55:28000/pp4_blog_demo.mp4" width="500" height="250" controls="controls">您的浏览器不支持此种视频格式。</video> -->
+
+
+
+<video autoplay="autoplay" controls="controls" id="youku-html5-player-video" onclick="playVideo('http://v.youku.com/player/getRealM3U8/vid/XNDE4NjIwOTI0/type//video.m3u8');"  preload="" src="http://210.73.88.55:28000/pp4_blog_demo.mp4" width="100%" x-webkit-airplay="allow">
+Your browser does not support the video tag.</video>
+<script>
+  function playVideo(video){
+    window.JSInterface.startVideo(video);
+  }
+</script>
+</body>
+</html>

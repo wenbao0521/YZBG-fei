@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+        <meta http-equiv="Access-Control-Allow-Origin" content="*">
+<!-- <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />-->
+		<link rel="stylesheet" href="../css/jquery.mobile-1.3.2.min.css">
+        
+        <script type="text/javascript" charset="utf-8" src="../cordova-2.0.0.js"></script>      
+		<script type="text/javascript" src="../js/jquery.js"></script>    
+		<script type="text/javascript" src="../js/jquery.mobile-1.3.2.min.js"></script>
+
+   		<script type="text/javascript" src="../js/all.js"></script>
+        <script language='javascript' src='../js/serverIp.js' ></script>
+        
+		<title>主页</title>
+
+<script type="text/javascript">
+ $(document).ready(function(){
+		getSJSYRInfo();//获取手机使用人信息，每开一次程序，重新获取一次
+
+ })
+
+</script>
+
+</head>	
+<body>
+
+<div data-role="page" id="pageone" data-theme="b">
+  <div data-role="header" data-position="fixed">
+    <h1>监狱执法审批管理系统</h1>
+  </div>
+
+  <div data-role="content">
+   
+    <ul data-role="listview" data-inset="true" >
+    <li><a href="#" onclick="jumpInfoPage('ryck.html')"><img src="../images/file.png" ><h3 style="padding-top:10px">人员查看</h3></a></li>
+      <li style="height:30px">
+      	  <a href="#" onclick="jumpInfoPage('SPLieBiao.html')"> 
+          		 <h3 style="padding-top:10px">审批列表</h3> 
+                 <span class="ui-li-count" style="color:red" id="zjspCount"> 暂无审批任务 </span> 		
+          		 <img src="../images/sp.png" >
+          </a></li>
+          
+      <li><a href="#" onclick="jumpInfoPage('SPLSLieBiao.html')"><img src="../images/document.png"><h3 style="padding-top:10px">审批历史</h3></a></li>
+      <li><a href="#" onclick="jumpInfoPage('yingyin.html')"><img src="../images/star.png" ><h3 style="padding-top:10px">特别关注</h3></a></li>
+      <li><a href="#"><img src="../images/sz.png" ><h3 style="padding-top:10px">基本设置</h3></a></li>
+      <li><a href="#"><img src="../images/shou.png" ><h3 style="padding-top:10px">关于</h3></a></li>
+      
+   </ul>
+   
+   
+   
+   
+  </div><!--content-->
+
+
+
+
+
+
+
+
+
+
+  <div data-role="footer" data-position="fixed">
+  <h1>更新于  <span id="zhugxyid"></span></h1>
+  </div>
+</div> 
+
+
+
+
+</div>
+</body>
+
+</html>
+    
+
+

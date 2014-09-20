@@ -531,9 +531,9 @@ function getSPLieBiaoByIMEIAndJHCallBack(data){
 //	alert(data.length+"data.length");
 $("#spliebiaogxyid").text(data[0].gxy);
 
-	$("#list").find("li").remove();//先删除以前的数据+"&splb="+escape(data[i].splb)		 
+	$("#list").find("li").remove();//先删除以前的数据+"&splb="+escape(data[i].splb)		instcreatetime 根式为120的时间
 			  for(var i = 0; i < data.length; i++){
-			 var list = $( "<li> <a href=\"#\" onclick=\"jumpInfoSPPage('"+data[i].instid+"','"+escape(data[i].splb)+"')\"><p style=\"font-weight:800; font-size:16px; margin-top:5px\">"+data[i].splb+"</p><p><span>"+data[i].instdesc+"</span><span style=\"float:right;\">"+data[i].instcreatetime+"</span></p> <p style=\"margin-top:5px; color:red;\">未审批</p> </a></li>"
+			 var list = $( "<li> <a href=\"#\" onclick=\"jumpInfoSPPage('"+data[i].instid+"','"+escape(data[i].splb)+"')\"><p style=\"font-weight:800; font-size:16px; margin-top:5px\">"+data[i].splb+"</p><p><span>"+data[i].instdesc+"</span><span style=\"float:right;\">"+data[i].gshtime+"</span></p> <p style=\"margin-top:5px; color:red;\">未审批</p> </a></li>"
 
 				);			
 					
@@ -569,9 +569,8 @@ function getSpyjInfo(){
 
 //获取审批信息成功后，操作的
 function getSpyjInfoCallBack(data){
-
-	
 $("#spyjxinxidivid").html('');	
+alert($("#spyjxinxidivid").width());
 var yjwidth =$("#spyjxinxidivid").width();
 var spyjxinxilist='';
 spyjxinxilist='<table border=\"1\" cellspacing=\"0\" cellpadding=\"0\">';
@@ -581,16 +580,16 @@ window.sessionStorage.setItem("InstEsconrtID",data[0].InstEsconrtID);
 
   for(var i = 0; i < data.length; i++){
 //alert("instactoperuserrange"+data[0].instactoperuserrange.length);		  
-				spyjxinxilist +="<tr> <td style=\"width:150px\">"+data[i].actname+"</td><td style=\"width:"+yjwidth+"px;text-align:left\">"+data[i].instactopername+" -- "+data[i].instactactiontime+" -- "+data[i].instactstatedesc+"</td> </tr> ";  
+				spyjxinxilist +="<tr> <td class=\"tdfont\" style=\"width:150px\">"+data[i].actname+"</td><td style=\"width:"+yjwidth+"px;text-align:left\">"+data[i].instactopername+" -- "+data[i].instactactiontime+" -- "+data[i].instactstatedesc+"</td> </tr> ";  
 //判断当前使用人的jh和审批的环节的警号
 if(data[i].instactopersiren === window.localStorage.getItem("jh")){
 	window.sessionStorage.setItem("instactid",data[i].instactid);
 //	window.sessionStorage.getItem("instactid");
-	
-//	shenpijieguodiv
+
 //1.只有确认按钮，转交2是审批环节同意和不同意，转交
-	if(data[i].actrule ==="1"){
-		$("qrid").text("确认");
+
+	if(data[i].actrule === "1"){
+		$("#qrid").text("确认");
 		$("#qrdivid").show();
 	}else if(data[i].actrule ==="2"){
 		$("#tyaid").text("同意");
@@ -599,6 +598,13 @@ if(data[i].instactopersiren === window.localStorage.getItem("jh")){
 		$("#spdivid").show();
 
 	}
+	//	window.localStorage.setItem("instactoperuserrange",data[i].instactoperuserrange);
+	var instactoperuserranges=data[i].instactoperuserrange.data;
+		
+		for(var ii = 0; ii < instactoperuserranges.length; ii++){//在获取审批类表的同时，把可以转交的人的信息，放到select中
+			var zjlist = $(" <option value=\""+instactoperuserranges[ii].jh+"\">"+instactoperuserranges[ii].xm+"</option>");
+			$("#spzjselectId").append(zjlist);		
+		}
 }
 
 			
@@ -709,10 +715,10 @@ var lclx='';
 lijianxinxilist =" <table  border=\"1\" cellspacing=\"0\" cellpadding=\"0\">";
 
  for(var i = 0; i < data.length; i++){
-			
+
 //lijianxinxilist +="<tr><td>"+data[0].jhljtime+"</td><td>"+data[0].jhfjtime+"</td></tr>";
-lijianxinxilist +="<tr><td>计划离监时间</td><td>"+data[i].jhljtime+"</td></tr><tr><td>计划返监时间</td><td>"+data[i].jhfjtime+"</td></tr>";
-lclx=" <tr><td>离监去向</td><td>去往哪个医院</td></tr><tr><td  style=\"width:200px;\">行车路线</td><td style=\"width:"+ljxxwidth+"px;\">"+data[i].Travelway+"</td></tr>";
+lijianxinxilist +="<tr><td class=\"tdfont\">计划离监时间</td><td>"+data[i].jhljtime+"</td></tr><tr><td class=\"tdfont\">计划返监时间</td><td>"+data[i].jhfjtime+"</td></tr>";
+lclx=" <tr><td class=\"tdfont\">离监去向</td><td>"+data[i].leaveprisondirection+"</td></tr><tr><td class=\"tdfont\" style=\"width:200px;\">行车路线</td><td style=\"width:"+ljxxwidth+"px;\">"+data[i].Travelway+"</td></tr>";
 
 }//for
 
@@ -842,5 +848,44 @@ $.getScript(getServerIpAddress()+"/YZBGinterface/UpdateData?instid="+instid+"&in
 	
 }//result
 function getSPJGResult(data){
-	alert(data[0].success);
+	if(data[0].result ==="Succss"){
+		alert("审批成功！");
+}
+	jumpInfoPage("SPLieBiao.html");
+}
+
+//转交，同意按钮
+function spzjbutton(){
+var spzjslectJh =$("#spzjselectId").find("option:selected").val();//转交给的jh
+var spzjslectXm =$("#spzjselectId").find("option:selected").text();//转交给的xm
+var instactid = window.sessionStorage.getItem("instactid");
+
+$.getScript(getServerIpAddress()+"/YZBGinterface/UpdateData?jh="+spzjslectJh+"&xm="+escape(escape(spzjslectXm))+"&instactid="+instactid+"&callbackname=spzjbuttoncallback&hid=864219020023223&sqlid=905&appid=11",function(response,status){/*alert(response+"funciton"+status);*/});
+	
+}
+//转交回调
+function spzjbuttoncallback(data){
+	if(data[0].result ==="Succss"){
+		alert("转交成功！");
+}
+jumpInfoPage("SPLieBiao.html");	
+}
+
+//离监就医--不同意
+function btytj(){
+	if($('#textareaid').val().replace(/^\s+|\s+$/g,"") == "请输入不同意理由，不要操过15个汉字！" || $('#textareaid').val().replace(/^\s+|\s+$/g,"") ===''){
+		return; //如果没有输入不同意理由，不让提交。
+	}
+	
+	var instid =getUrlParam("instid");
+	var instactid = window.sessionStorage.getItem("instactid");
+	
+$.getScript(getServerIpAddress()+"/YZBGinterface/UpdateData?instid="+instid+"&instactid="+instactid+"&spjg="+escape(escape($('#textareaid').val()))+"&callbackname=btytjcallback&hid=864219020023223&sqlid=901&appid=11",function(response,status){/*alert(response+"funciton"+status);*/});	
+	
+}
+function btytjcallback(data){
+		if(data[0].result === "Succss"){
+			alert("不同意提交成功！");
+		}	
+jumpInfoPage("SPLieBiao.html");	
 }

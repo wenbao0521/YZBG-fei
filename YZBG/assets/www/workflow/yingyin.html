@@ -2,24 +2,105 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="../js/template.js"></script>
+
+		<link rel="stylesheet" href="../css/jquery.mobile-1.3.2.min.css">
+        
+        <script type="text/javascript" charset="utf-8" src="../cordova-2.0.0.js"></script>      
+		<script type="text/javascript" src="../js/jquery.js"></script>    
+		<script type="text/javascript" src="../js/jquery.mobile-1.3.2.min.js"></script>
+
+   		<script type="text/javascript" src="../js/all.js"></script>
+        <script language='javascript' src='../js/serverIp.js' ></script>
+
+
+<script type="application/javascript">
+$.getScript(getServerIpAddress()+"/YZBGinterface/GetDataDecent?jh="+window.localStorage.getItem("jh")+"&callbackname=callbacklll&hid=864219020023223&sqlid=14&appid=11",function(response,status){/*alert(response+"--funciton--"+status);*/});	
+
+//审批列表回调instactid
+function callbacklll(data){
+alert(data.length+"data.length");
+
+
+//	$("#list").find("li").remove();//先删除以前的数据+"&splb="+escape(data[i].splb)		instcreatetime 根式为120的时间
+//			  for(var i = 0; i < data.length; i++){
+//			 var list = $( "<li> <a href=\"#\" onclick=\"jumpInfoSPPage('"+data[i].instid+"','"+escape(data[i].splb)+"')\"><p style=\"font-weight:800; font-size:16px; margin-top:5px\">"+data[i].splb+"</p><p><span>"+data[i].instdesc+"</span><span style=\"float:right;\">"+data[i].gshtime+"</span></p> <p style=\"margin-top:5px; color:red;\">未审批</p> </a></li>"
+//
+//				);			
+//					
+//			    $("#list").append(list).find("li:last").hide();
+//                $('ul').listview('refresh');
+//                $("#list").find("li:last").slideDown(300);
+//	
+//				
+//			}
+
+}
+
+
+
+</script>
 <title>无标题文档</title>
 </head>
 
 <body>
 
+<div id="content"></div>
 
 
 
-<!--<video src="http://210.73.88.55:28000/pp4_blog_demo.mp4" width="500" height="250" controls="controls">您的浏览器不支持此种视频格式。</video> -->
 
 
 
-<video autoplay="autoplay" controls="controls" id="youku-html5-player-video" onclick="playVideo('http://v.youku.com/player/getRealM3U8/vid/XNDE4NjIwOTI0/type//video.m3u8');"  preload="" src="http://210.73.88.55:28000/pp4_blog_demo.mp4" width="100%" x-webkit-airplay="allow">
-Your browser does not support the video tag.</video>
-<script>
-  function playVideo(video){
-    window.JSInterface.startVideo(video);
-  }
+
+
+<script id="test" type="text/html">
+
+
+
+<h1>z这是例子</h1>
+<ul>
+    {{each  as value i}}
+        <li>索引 {{i + 1}} ：{{value.gshtime}}</li>
+    {{/each}}
+</ul>
+
 </script>
+
+<script>
+
+function callbacklll(data){
+alert(data[0].gshtime+"<--data.length-->"+data.length);
+
+//var data = {
+//	title: '基本例子',
+//	isAdmin: true,
+//	list: ['文艺', '博客', '摄影', '电影', '民谣', '旅行', '吉他']
+//};
+//var l={};
+//l.d=data;
+var html = template('test', data);
+document.getElementById('content').innerHTML = html;
+
+
+}
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>

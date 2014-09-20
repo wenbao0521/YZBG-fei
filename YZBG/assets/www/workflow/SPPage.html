@@ -10,9 +10,10 @@
     </style>
     <style>
 table tr{
-    height:25px;
-    line-height:25px;
+    height:35px;
+    line-height:35px;
 }
+.tdfont{ font-weight:900}
 </style>
     
 		<link rel="stylesheet" href="../css/jquery.mobile-1.3.2.min.css">
@@ -28,6 +29,21 @@ table tr{
 
 <script type="text/javascript">
  $(document).ready(function(){
+/*	 $('#textareaid').click(function(){
+	alert($('#textareaid').val().replace(/^\s+|\s+$/g,""));
+});*/
+	 
+$('#textareaid').blur(function(){
+	if($('#textareaid').val().replace(/^\s+|\s+$/g,"") ===""){
+		$('#textareaid').val('请输入不同意理由，不要操过15个汉字！');
+	}
+});
+ $('#textareaid').focus(function(){
+	if($('#textareaid').val().replace(/^\s+|\s+$/g,"") == "请输入不同意理由，不要操过15个汉字！"){
+		$('#textareaid').val('不同意此审批!');
+	}
+});
+ 
 	 getSpyjInfo();//获取审批意见信息
 //	selectOnchangeVal();
  })
@@ -67,11 +83,7 @@ function dtjztyzjr(){//动态加载同意转交人信息
 	var list = $(" <option value=\"zj\">转交</option>");
 	$("#sptyselectId").append(list);
 }
-//审批同意，同意按钮
-function sptybutton(){
-var tyzjrselectVal =$("#sptyselectId").find("option:selected").val();//审批结果同意转交人信息
-	
-}
+
 </script>
 
 </head>	
@@ -96,7 +108,7 @@ var tyzjrselectVal =$("#sptyselectId").find("option:selected").val();//审批结
   </div>
 
 <div data-role="content" style="text-align:center">
-<h2 style=" font-weight:900" id="SPTitleId">审批就医</h2>
+<h2 style=" font-weight:900" id="SPTitleId">离监就医审批</h2>
 
 <!--		zf信息-->
 
@@ -273,12 +285,12 @@ var tyzjrselectVal =$("#sptyselectId").find("option:selected").val();//审批结
  <table border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td style=" font-weight:900">不同意理由：</td>
-    <td><textarea style="height:80px"></textarea></td>
+    <td><textarea style="height:80px" maxlength="15" id="textareaid">请输入不同意理由，不要操过15个汉字！</textarea></td>
   </tr>
   
     <tr>
     <td></td>
-    <td align="right" style="margin-right:20px"><a href="#" data-role="button" data-theme="b" onclick="test()" style="width:50%" >不同意</a></td>
+    <td align="right" style="margin-right:20px"><a href="#" data-role="button" data-theme="b" onclick="btytj()" style="width:50%" >提交</a></td>
   </tr>
  </table>
 
@@ -302,10 +314,10 @@ var tyzjrselectVal =$("#sptyselectId").find("option:selected").val();//审批结
   <div data-role="content" align="center">
  <table border="0" cellspacing="0" cellpadding="0">
   <tr>
-    <td style=" font-weight:900">转交人：</td>
+    <td style=" font-weight:900">转交给：</td>
     <td>
     		 <fieldset data-role="controlgroup" data-type="horizontal">
-              <select name="sptyselectId" id="sptyselectId">
+              <select name="spzjselectId" id="spzjselectId">
             
             </select>
          </fieldset>
@@ -314,7 +326,7 @@ var tyzjrselectVal =$("#sptyselectId").find("option:selected").val();//审批结
   
     <tr>
     <td></td>
-    <td align="right" style="margin-right:20px"><a href="#" data-role="button" data-theme="b" onclick="sptybutton()" >同意</a></td>
+    <td align="right" style="margin-right:20px"><a href="#" data-role="button" data-theme="b" onclick="spzjbutton()" >提交</a></td>
   </tr>
  </table>
 

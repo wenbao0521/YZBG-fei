@@ -17,27 +17,6 @@
 <script type="application/javascript">
 $.getScript(getServerIpAddress()+"/YZBGinterface/GetDataDecent?jh="+window.localStorage.getItem("jh")+"&callbackname=callbacklll&hid=864219020023223&sqlid=14&appid=11",function(response,status){/*alert(response+"--funciton--"+status);*/});	
 
-//审批列表回调instactid
-function callbacklll(data){
-alert(data.length+"data.length");
-
-
-//	$("#list").find("li").remove();//先删除以前的数据+"&splb="+escape(data[i].splb)		instcreatetime 根式为120的时间
-//			  for(var i = 0; i < data.length; i++){
-//			 var list = $( "<li> <a href=\"#\" onclick=\"jumpInfoSPPage('"+data[i].instid+"','"+escape(data[i].splb)+"')\"><p style=\"font-weight:800; font-size:16px; margin-top:5px\">"+data[i].splb+"</p><p><span>"+data[i].instdesc+"</span><span style=\"float:right;\">"+data[i].gshtime+"</span></p> <p style=\"margin-top:5px; color:red;\">未审批</p> </a></li>"
-//
-//				);			
-//					
-//			    $("#list").append(list).find("li:last").hide();
-//                $('ul').listview('refresh');
-//                $("#list").find("li:last").slideDown(300);
-//	
-//				
-//			}
-
-}
-
-
 
 </script>
 <title>无标题文档</title>
@@ -50,10 +29,6 @@ alert(data.length+"data.length");
 
 
 
-
-
-
-
 <script id="test" type="text/html">
 
 
@@ -61,7 +36,12 @@ alert(data.length+"data.length");
 <h1>z这是例子</h1>
 <ul>
     {{each  as value i}}
-        <li>索引 {{i + 1}} ：{{value.gshtime}}</li>
+
+		<li>
+		
+			<a href=\"#\" onclick=\"jumpInfoSPPage('"+{{value.instid}}+"','"+escape({{value.splb}})+"')\"><p style=\"font-weight:800; font-size:16px; margin-top:5px\">"+{{value.splb}}+"</p><p><span>"+{{value.instdesc}}+"</span><span style=\"float:right;\">"+{{value.gshtime}+"</span></p> <p style=\"margin-top:5px; color:red;\">未审批</p> </a>
+			
+		</li>
     {{/each}}
 </ul>
 

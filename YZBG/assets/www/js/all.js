@@ -436,7 +436,7 @@ function jumpInfoSPPage(instid,splb){
 var splbhz=unescape(splb);//根据审批类别不同，跳转不同页面+"&splb="+splb  +"&splb="+splb
 var url='';	
 if(splbhz === "离监就医"){
-	url ="SPPage.html?instid="+instid;
+	url ="SPPageMB.html?instid="+instid;
 }else{// if("")
 	url ="LSCRZSPPage.html?instid="+instid;
 }
@@ -514,7 +514,6 @@ $.getScript(getServerIpAddress()+"/YZBGinterface/GetDataDecent?jh="+window.local
 }
 //主页泡泡数，回调
 function getZJSPCountCallBack(data){
-	
 		$("#zjspCount").text(data[0].spcount);
 		
 		$("#zhugxyid").text(data[0].gxy); 
@@ -533,7 +532,7 @@ $("#spliebiaogxyid").text(data[0].gxy);
 
 	$("#list").find("li").remove();//先删除以前的数据+"&splb="+escape(data[i].splb)		instcreatetime 根式为120的时间
 			  for(var i = 0; i < data.length; i++){
-			 var list = $( "<li> <a href=\"#\" onclick=\"jumpInfoSPPage('"+data[i].instid+"','"+escape(data[i].splb)+"')\"><p style=\"font-weight:800; font-size:16px; margin-top:5px\">"+data[i].splb+"</p><p><span>"+data[i].instdesc+"</span><span style=\"float:right;\">"+data[i].gshtime+"</span></p> <p style=\"margin-top:5px; color:red;\">未审批</p> </a></li>"
+			 var list = $( "<li> <a href=\"#\" onclick=\"jumpInfoSPPage('"+data[i].instid+"','"+escape(data[i].splb)+"')\"><p style=\"font-weight:800; font-size:16px; margin-top:5px\">"+data[i].splb+"</p><p><span>"+data[i].instdesc+"</span><span style=\"float:right;\">"+data[i].gshtime+"</span></p> <p style=\"margin-top:5px;\">未审批</p> </a></li>"
 
 				);			
 					
@@ -769,7 +768,7 @@ function getzrgninfobyjhCallBack(data){
 	$("#zrgjinfo_dh").text(data[0].yddh);		
 	$("#zrgjinfo_djj").text(data[0].PoliceInterPhone);	
 	$("#zrgjinfo_sfxdjg").text(data[0].isdjg);	
-	$("#zrgjinfo_zzfg").text(data[0].RespDivision);		
+	$("#zrgjinfo_zzfg").text(data[0].respdivisionmc);<!--RespDivision		-->
 	$("#zrgjinfo_fgms").text(data[0].DivisonDesc);		
 }
 //--------------------------------------------------------点击离监人员姓名，过去离监人员信息
@@ -841,6 +840,12 @@ $("#shiyouorganjingorrenshudivid").prepend(lscrzxinxilist);
 //-----------------------------------------------------------------------
 //-----------------------------------------------------------------------
 function spjgtyorqr(){
+	
+	if(window.confirm('同意此审批？')){//点击同意，不做任何操作，继续进行下面操作，点击取消，return false 终止操作
+	}else{
+	return false;
+	}
+
 	var instid =getUrlParam("instid");
 	var instactid = window.sessionStorage.getItem("instactid");
 	

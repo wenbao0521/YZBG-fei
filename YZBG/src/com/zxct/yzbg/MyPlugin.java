@@ -31,21 +31,21 @@ public class MyPlugin extends Plugin {
 TelephonyManager systemService = (TelephonyManager)cordova.getActivity().getSystemService(Context.TELEPHONY_SERVICE);                	
 
 
-Tag tag=null;
-if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(cordova.getActivity().getIntent().getAction())) {
-	    tag = cordova.getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
-}
-
-
-
 return new PluginResult(PluginResult.Status.OK, systemService.getDeviceId());
                 } else {
                     return new PluginResult(PluginResult.Status.ERROR);
                 }
             } else if (action.equals("nfc")) {
-                return new PluginResult(PluginResult.Status.INVALID_ACTION);
+
+					Tag tag=null;
+					if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(cordova.getActivity().getIntent().getAction())) {
+						    tag = cordova.getActivity().getIntent().getParcelableExtra(NfcAdapter.EXTRA_TAG);
+					}
+
+//            	return new PluginResult(PluginResult.Status.OK, bin2hex(tag.getId()));
+					return new PluginResult(PluginResult.Status.OK, "1");
             }else{
-                return new PluginResult(PluginResult.Status.INVALID_ACTION);
+                return new PluginResult(PluginResult.Status.ERROR);
             }
         } catch (JSONException e) {
             return new PluginResult(PluginResult.Status.JSON_EXCEPTION,"error");

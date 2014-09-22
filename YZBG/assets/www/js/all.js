@@ -1,4 +1,5 @@
 // JavaScript Document
+  var tbgzdb = window.openDatabase("tbgzzfxxt", "1.0","数据库描述",20000);//-------------------------------------------这是特别关注zf的信息
 //获取url中的一个参数，多个不行
 function getUrlParam(name)
 {
@@ -17,6 +18,7 @@ function initdatabase(){
 	breack;
 }
   var db = window.openDatabase("mydata1111", "1.0","数据库描述",20000);
+
   //window.openDatabase("数据库名字", "版本","数据库描述",数据库大小);
   if(db)
   alert("新建数据库成功！");
@@ -244,6 +246,7 @@ function getPluginInfo(){
 	function successFunction(e){
 /*		$("#searchid").val(e);
 		$("#searchid").focus();*/
+alert(e);		
 		window.sessionStorage.setItem("imei",e);
 	}
 	function failFunction(e){
@@ -261,11 +264,21 @@ function  getNFCPluginInfo(){
 	}
 	
 	function NFCSuccessFunction(e){
-/*		$("#searchid").val(e);
-		$("#searchid").focus();*/
-//		window.sessionStorage.setItem("imei",e);
-alert(e);
-	}
+
+		$("#searchid").val(e);
+		$("#searchid").focus();
+
+		$("#searchid").bind("propertychange focus",function(){//获取nfc卡之后，给搜索框焦点，此处是监听focus焦点事件的。
+				var srval = $("#searchid").val().replace(/^\s+|\s+$/g,"");//去除两端空格\
+		
+					if(!srval){
+						$("#list").find("li").remove();//删除之前输入的条件后，把查出的历史列表清空
+							return;
+						}
+		$.getScript(getServerIpAddress()+"/YZBGinterface/GetData?par="+escape(escape(srval))+"&callbackname=getServerDetaCallBack&hid=864219020023223&sqlid=10&appid=11",function(response,status){/*alert(response+"--funciton--"+status);*/});	
+		})
+
+	}//NFCSuccessFunction
 	function NFCfailFunction(e){
 		alert("fail:"+e);
 		return;
@@ -297,8 +310,13 @@ $("[class='ui-icon ui-icon-delete ui-icon-shadow']").click(function(){//输入�
 $("#list").find("li").remove();//删除之前输入的条件后，把查出的历史列表清空
 })
 //	 $("#searchid").on("input", function (e) {
+	
+
+	
+	
 		 $("#searchid").on("input", function (e) {
-		var srval = $("#searchid").val().replace(/^\s+|\s+$/g,"");//去除两端空格\
+			var srval = $("#searchid").val().replace(/^\s+|\s+$/g,"");//去除两端空格\
+
 			if(!srval){
 				$("#list").find("li").remove();//删除之前输入的条件后，把查出的历史列表清空
 					return;
@@ -339,23 +357,48 @@ $.getScript(getServerIpAddress()+"/YZBGinterface/GetData?par="+escape(escape(srv
 }
 //获取后台数据后的回调方法
 function getServerDetaCallBack(data){
-
+createTBGZSJK();//如果有特别关注数据库和表，创建爱你
 	$("#list").find("li").remove();//先删除以前的数据		 
 			  for(var i = 0; i < data.length; i++){
-			 var list = $( "<li class='' data-icon='false' data-theme='d'> <a  href='#' data-ajax=\"false\" onclick='getJTXXByBh("+data[i].BH+",\""+data[i].BH+"\")'> <img  width='100px'  heigth='10px' src='http://210.73.88.55:28000/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/111.png'>"+
+			 var list ="<li class='' data-icon='false' data-theme='d'> <a  href='#' data-ajax=\"false\" onclick='getJTXXByBh("+data[i].BH+",\""+data[i].BH+"\")'> <img  width='100px'  heigth='10px' src='http://210.73.88.55:28000/%E7%B3%BB%E7%BB%9F%E5%9B%BE%E7%89%87/111.png'>"+
 			 "<p class='ui-li-desc'>姓名："+data[i].XM+"("+data[i].BH+")</p> "+
 			 " <p class='ui-li-desc'>性别："+data[i].XB+"&nbsp&nbsp&nbsp&nbsp年龄："+data[i].NL+"&nbsp&nbsp&nbsp&nbsp刑期："+data[i].XQ+"</p>"+
 			 "<p class='ui-li-desc'>家庭地址："+data[i].HJZZ+"</p>"+
-			 "<p class='ui-li-desc'>犯罪类型："+data[i].XAFLB+"&nbsp&nbsp&nbsp&nbsp罪名："+data[i].ZM+"</p>"+
-			 " </a><a href=\"#\" data-rel=\"dialog\" data-transition=\"pop\" data-icon=\"star\" data-theme=\"d\">Download Browser</a> </li>"
+			 "<p class='ui-li-desc'>犯罪类型："+data[i].XAFLB+"&nbsp&nbsp&nbsp&nbsp罪名："+data[i].ZM+"</p></a>";
 
-				);			
-					
+list +="<a href=\"#\" data-rel=\"dialog\" data-transition=\"pop\" data-icon=\"star\" id="+data[i].BH+" data-theme=\"a\" onclick=\"setgz('"+data[i].BH+"','"+data[i].XM+"','"+data[i].XB+"','"+data[i].NL+"','"+data[i].XQ+"','"+data[i].HJZZ+"','"+data[i].XAFLB+"','"+data[i].ZM+"')\">Download Browser</a> "
+		    
+				list +="</li>";
+				list =$(list);						
 			    $("#list").append(list).find("li:last").hide();
                 $('ul').listview('refresh');
                 $("#list").find("li:last").slideDown(300);
+
+	    tbgzdb.transaction(function(tx) {//没有实现的关注。。。。。。。。。。。。。。。。。。。。。。。。。。
+
+			  var sql = 'SELECT * FROM tbgztable';	
+			  tx.executeSql(sql, [],
+			  function(tx, result) {
+		alert(i+"function"+data[i].BH);
+				  for(var ii=0;ii < result.rows.length;ii++){
+					
+					  if(result.rows.item(ii)['bh']  == data[i].BH){
+						  alert("if");
+							$("#"+data[i].BH).attr("data-theme","d");	
+					  }else{
+							    
+					  }
+
+				  }//result  for
+			  })
+});
 	
-					if(i>=10){//判断返回数据，如果是多余10条信息，第11条显示，由于数据太多情重新添加查询条件
+	
+	
+	
+	
+	
+					if(i>=9){//判断返回数据，如果是多余10条信息，第11条显示，由于数据太多情重新添加查询条件,下标是0
 						var list = $("<li><p style=\"font-size:14px;margin-top:5px; text-align:center; color:#F00; font-weight:700\">由于模糊查询返回数据信息太大，请添加详细查询信息！</p></li>");
 						$("#list").append(list).find("li:last").hide();
 						$('ul').listview('refresh');
@@ -363,14 +406,25 @@ function getServerDetaCallBack(data){
 						return false;
 					}
 			}
-
-
  			//	$("#list").find("li").remove();//不remove，会一直append li元素，没查询完成后，remove一次
-
-
 			  
 }
-
+//创建特别关注数据库
+function createTBGZSJK(){
+ tbgzdb.transaction(function(tx) {	
+//  tx.executeSql("drop table tbgztable")
+	tx.executeSql("CREATE TABLE if not exists tbgztable (bh varchar, xm varchar , xb varchar ,nl varchar ,xq varchar, hjzz varchar, xaflb varchar ,zm varchar,createtiem REAL)");	
+ });
+}
+//设置特别关注zf
+function setgz(bh,xm,xb,nl,xq,hjzz,xaflb,zm){
+	tbgzdb.transaction(function(tx) {
+		tx.executeSql("INSERT INTO tbgztable (bh,xm,xb,nl,xq,hjzz,xaflb,zm,createtiem) values(?,?,?,?,?,?,?,?,?)", [bh,xm,xb,nl,xq,hjzz,xaflb,zm,new Date().getTime()], null, null);
+	
+  });
+	
+	
+}
 //根据获取详细信息，传 bh,
 function getJTXXByBh(bh,bh1){
 		window.sessionStorage.setItem("bh",bh);//参数放到sessionStorage中，参数传递完毕后清空
@@ -437,6 +491,8 @@ var splbhz=unescape(splb);//根据审批类别不同，跳转不同页面+"&splb
 var url='';	
 if(splbhz === "离监就医"){
 	url ="SPPageMB.html?instid="+instid;
+}else if(splbhz === "社会关系审核"){
+	url ="SPPageMBSHGX.html?instid="+instid;
 }else{// if("")
 	url ="LSCRZSPPage.html?instid="+instid;
 }
@@ -569,7 +625,6 @@ function getSpyjInfo(){
 //获取审批信息成功后，操作的
 function getSpyjInfoCallBack(data){
 $("#spyjxinxidivid").html('');	
-alert($("#spyjxinxidivid").width());
 var yjwidth =$("#spyjxinxidivid").width();
 var spyjxinxilist='';
 spyjxinxilist='<table border=\"1\" cellspacing=\"0\" cellpadding=\"0\">';
@@ -664,7 +719,7 @@ window.sessionStorage.setItem("gjxmanddh",temp);
 
 //获取-------押解车辆信息
 function getyjce(){	
-$.getScript(getServerIpAddress()+"/YZBGinterface/GetDataSJ?InstEsconrtID="+window.sessionStorage.getItem("InstEsconrtID")+"&callbackname=getyjceInfoCallBack&hid=864219020023223&sqlid=17&appid=11",function(response,status){})
+$.getScript(getServerIpAddress()+"/YZBGinterface/GetData?InstEsconrtID="+window.sessionStorage.getItem("InstEsconrtID")+"&callbackname=getyjceInfoCallBack&hid=864219020023223&sqlid=17&appid=11",function(response,status){})
 }
 //---------------
 function getyjceInfoCallBack(data){
@@ -853,6 +908,7 @@ $.getScript(getServerIpAddress()+"/YZBGinterface/UpdateData?instid="+instid+"&in
 	
 }//result
 function getSPJGResult(data){
+	
 	if(data[0].result ==="Succss"){
 		alert("审批成功！");
 }
